@@ -1,0 +1,1 @@
+# codemindai_frontendnext
