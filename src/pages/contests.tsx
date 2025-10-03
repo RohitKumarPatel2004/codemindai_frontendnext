@@ -96,46 +96,46 @@ const Contests: NextPage = () => {
     </p>
 
     {/* Filter Box */}
-    <div className="bg-white border rounded-lg p-4 mb-8">
-        {/* Tabs + Filters Box */}
-        <div className="bg-white border rounded-lg p-4 mb-8">
-          {/* Tabs */}
-          <div className="flex gap-4 mb-4">
-            {["Upcoming", "Ongoing", "Completed"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab as any)}
-                className={`px-4 py-2 rounded-md text-sm font-medium ${
-                  activeTab === tab
-                    ? "bg-gray-900 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
+   <div className="bg-white border rounded-lg p-4 mb-8">
+  {/* Tabs */}
+  <div className="flex flex-wrap gap-2 sm:gap-4 mb-4">
+    {["Upcoming", "Ongoing", "Completed"].map((tab) => (
+      <button
+        key={tab}
+        onClick={() => setActiveTab(tab as any)}
+        className={`px-4 py-2 rounded-md text-sm font-medium w-full sm:w-auto ${
+          activeTab === tab
+            ? "bg-gray-900 text-white"
+            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+        }`}
+      >
+        {tab}
+      </button>
+    ))}
+  </div>
 
-          {/* Filters */}
-          <div className="flex gap-4">
-            <select className="border rounded-md px-3 py-2 text-sm">
-              <option>Sort by Prize Pool</option>
-              <option>High to Low</option>
-              <option>Low to High</option>
-            </select>
-            <select className="border rounded-md px-3 py-2 text-sm">
-              <option>Entry Fee</option>
-              <option>Free</option>
-              <option>Paid</option>
-            </select>
-            <select className="border rounded-md px-3 py-2 text-sm">
-              <option>Start Time</option>
-              <option>Earliest</option>
-              <option>Latest</option>
-            </select>
-          </div>
-        </div>
-    </div>
+  {/* Filters */}
+  <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
+    <select className="border rounded-md px-3 py-2 text-sm w-full sm:w-auto">
+      <option>Sort by Prize Pool</option>
+      <option>High to Low</option>
+      <option>Low to High</option>
+    </select>
+
+    <select className="border rounded-md px-3 py-2 text-sm w-full sm:w-auto">
+      <option>Entry Fee</option>
+      <option>Free</option>
+      <option>Paid</option>
+    </select>
+
+    <select className="border rounded-md px-3 py-2 text-sm w-full sm:w-auto">
+      <option>Start Time</option>
+      <option>Earliest</option>
+      <option>Latest</option>
+    </select>
+  </div>
+</div>
+
 
     {/* Contest Cards */}
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
