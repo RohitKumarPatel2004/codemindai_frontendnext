@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; // ✅ correct import
 
 export type Contest = {
   id: number;
@@ -18,8 +19,9 @@ type ContestCardProps = {
 };
 
 const ContestCard = ({ contest }: ContestCardProps) => {
+  const router = useRouter();
+
   if (contest.status === "Ongoing") {
-    // 🔴 Special Layout for Ongoing Contests
     return (
       <div className="relative bg-white rounded-xl shadow-md border hover:shadow-lg transition p-5 flex flex-col gap-4">
         {/* Entry Fee Badge */}
@@ -36,21 +38,16 @@ const ContestCard = ({ contest }: ContestCardProps) => {
         {/* Title */}
         <h2 className="text-lg font-bold text-gray-800">{contest.title}</h2>
 
-        {/* Info Section */}
+        {/* Info */}
         <div className="flex flex-col gap-3 text-sm">
-          {/* Prize Pool */}
           <div className="flex justify-between">
             <span className="text-gray-500">Prize Pool</span>
             <span className="text-green-600 font-bold">{contest.prizePool}</span>
           </div>
-
-          {/* Start Time (LIVE) */}
           <div className="flex justify-between">
             <span className="text-gray-500">Starts in</span>
             <span className="text-red-500 font-bold animate-pulse">LIVE</span>
           </div>
-
-          {/* Participants */}
           <div className="flex justify-between items-center">
             <span className="text-gray-500">Participants</span>
             <div className="flex items-center gap-2">
@@ -82,7 +79,7 @@ const ContestCard = ({ contest }: ContestCardProps) => {
           ))}
         </div>
 
-        {/* 🔴 Ongoing Button */}
+        {/* Ongoing Button */}
         <button className="w-full bg-red-500 text-white py-2 rounded-lg font-semibold hover:bg-red-600 transition">
           Contest Ongoing
         </button>
@@ -90,7 +87,6 @@ const ContestCard = ({ contest }: ContestCardProps) => {
     );
   }
 
-  // 🟢 Default Layout for Upcoming / Completed Contests
   return (
     <div className="relative bg-white rounded-xl shadow-md border hover:shadow-lg transition p-5 flex flex-col gap-4">
       {/* Entry Fee Badge */}
@@ -104,10 +100,8 @@ const ContestCard = ({ contest }: ContestCardProps) => {
         {contest.entryFee}
       </span>
 
-      {/* Title */}
       <h2 className="text-lg font-semibold text-gray-800">{contest.title}</h2>
 
-      {/* Info Section */}
       <div className="flex flex-col gap-3 text-sm">
         <div className="flex justify-between">
           <span className="text-gray-500">Prize Pool</span>
@@ -137,7 +131,6 @@ const ContestCard = ({ contest }: ContestCardProps) => {
         </div>
       </div>
 
-      {/* Prize Distribution */}
       <div className="bg-gray-50 rounded-lg p-3 text-sm">
         <p className="font-semibold text-gray-700 mb-1">Prize Distribution</p>
         {contest.prizeDistribution.map((prize, idx) => (
@@ -148,8 +141,10 @@ const ContestCard = ({ contest }: ContestCardProps) => {
         ))}
       </div>
 
-      {/* 🟢 Upcoming/Completed Button */}
-      <button className="w-full bg-green-500 text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition">
+      <button
+        onClick={() => router.push(`/contests/${contest.id}`)} // ✅ fixed
+        className="w-full bg-green-500 text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition"
+      >
         Join Contest
       </button>
     </div>

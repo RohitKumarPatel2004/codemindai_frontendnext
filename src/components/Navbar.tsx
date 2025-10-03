@@ -75,6 +75,7 @@ const Navbar: React.FC = () => {
             <NavItem href="/discuss" label="Discuss" />
             <NavItem href="/interview" label="Interview" />
             <NavItem href="/premium" label="Premium" />
+            <NavItem href="/wallet" label="Premium" />
           </div>
 
           {/* Auth Buttons */}

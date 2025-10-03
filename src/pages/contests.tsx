@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import ContestCard, { Contest } from "../components/ContestCard";
 import { useState } from "react";
 
+
 const contests: Contest[] = [
   {
     id: 1,
