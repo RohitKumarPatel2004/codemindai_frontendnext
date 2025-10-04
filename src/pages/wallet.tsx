@@ -1,3 +1,5 @@
+// pages/wallet.tsx
+"use client";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Navbar from "../components/Navbar";
@@ -5,28 +7,23 @@ import Footer from "../components/Footer";
 import WalletCard from "../components/WalletCard";
 
 const transactions = [
-  { id: 1, type: "Add Cash", amount: 500, date: "2025-09-20" },
-  { id: 2, type: "Contest Entry", amount: -100, date: "2025-09-18" },
-  { id: 3, type: "Add Cash", amount: 1000, date: "2025-09-15" },
+  { id: 1, date: "16 Jan 2024", type: "Deposit", description: "UPI Payment", amount: 500, status: "Success" },
+  { id: 2, date: "15 Jan 2024", type: "Withdraw", description: "Bank Transfer", amount: -200, status: "Processing" },
+  { id: 3, date: "14 Jan 2024", type: "Prize", description: "Weekly Coding Challenge", amount: 150, status: "Success" },
+  { id: 4, date: "13 Jan 2024", type: "Entry Fee", description: "Algorithm Sprint Contest", amount: -50, status: "Success" },
+  { id: 5, date: "12 Jan 2024", type: "Bonus", description: "Welcome Bonus", amount: 100, status: "Success" },
 ];
 
 const Wallet: NextPage = () => {
-  const balance = 1400;
-
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Head>
-        <title>Wallet - CodemindAI</title>
-        <meta name="description" content="View your wallet and transactions on CodemindAI" />
+        <title>Wallet - CodeBattelX</title>
       </Head>
-
       <Navbar />
-
-      <main className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-        <h1 className="text-3xl font-bold text-gray-800 text-center">Wallet</h1>
-        <WalletCard balance={balance} transactions={transactions} />
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        <WalletCard transactions={transactions} />
       </main>
-
       <Footer />
     </div>
   );

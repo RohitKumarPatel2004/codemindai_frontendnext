@@ -16,7 +16,7 @@ const NavItem: React.FC<NavItemProps> = ({ href, label }) => {
   return (
     <Link
       href={href}
-      className={`relative px-2 py-1 text-sm font-medium transition duration-300 
+      className={`relative px-2 py-1 text-sm font-medium transition duration-300 group
         ${isActive ? "text-green-600" : "text-gray-700 hover:text-green-600"}`}
     >
       {label}
@@ -30,13 +30,15 @@ const NavItem: React.FC<NavItemProps> = ({ href, label }) => {
 };
 
 const Navbar: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null); // null = still checking
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("token");
+      setIsLoggedIn(!!token);
+    }
   }, []);
 
   const handleLogout = () => {
@@ -69,18 +71,21 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-6 text-sm items-center group">
+          <div className="hidden md:flex space-x-6 text-sm items-center">
             <NavItem href="/problems" label="Problems" />
             <NavItem href="/contests" label="Contests" />
             <NavItem href="/discuss" label="Discuss" />
             <NavItem href="/interview" label="Interview" />
             <NavItem href="/premium" label="Premium" />
-            <NavItem href="/wallet" label="Premium" />
+            <NavItem href="/wallet" label="Wallet" />
           </div>
 
           {/* Auth Buttons */}
           <div className="hidden md:flex space-x-3 items-center">
-            {!isLoggedIn ? (
+            {isLoggedIn === null ? (
+              // While checking localStorage, show placeholder
+              <div className="w-20 h-6 bg-gray-200 animate-pulse rounded" />
+            ) : !isLoggedIn ? (
               <>
                 <Link href="/auth/signin">
                   <button className="px-3 py-1 border border-gray-500 rounded text-sm hover:bg-gray-100 transition-all duration-300 hover:scale-105">
@@ -124,13 +129,22 @@ const Navbar: React.FC = () => {
             <NavItem href="/discuss" label="Discuss" />
             <NavItem href="/interview" label="Interview" />
             <NavItem href="/premium" label="Premium" />
+            <NavItem href="/wallet" label="Wallet" />
 
-            {!isLoggedIn ? (
+            {isLoggedIn === null ? (
+              <div className="w-20 h-6 bg-gray-200 animate-pulse rounded" />
+            ) : !isLoggedIn ? (
               <>
-                <Link href="/auth/signin" className="block py-2 text-gray-700 hover:text-green-600 transition">
+                <Link
+                  href="/auth/signin"
+                  className="block py-2 text-gray-700 hover:text-green-600 transition"
+                >
                   Sign In
                 </Link>
-                <Link href="/auth/signup" className="block py-2 text-green-600 font-medium transition">
+                <Link
+                  href="/auth/signup"
+                  className="block py-2 text-green-600 font-medium transition"
+                >
                   Sign Up
                 </Link>
               </>
