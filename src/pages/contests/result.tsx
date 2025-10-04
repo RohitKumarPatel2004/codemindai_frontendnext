@@ -5,6 +5,7 @@ import Footer from "../../components/Footer";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Trophy } from "lucide-react";
 import { List, Calendar } from "lucide-react";
+import Link from "next/link";
 
 const ContestResult = () => {
   const accuracyData = [
@@ -186,10 +187,13 @@ const ContestResult = () => {
               Check out the complete leaderboard to see rankings and scores of
               all participants.
             </p>
-            <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md shadow transition">
+              <Link href="/contests/leaderboard">
+                          <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md shadow transition">
               <List className="w-4 h-4" />
               View Full Leaderboard
             </button>
+              </Link>
+            
           </div>
 
           {/* Next Challenge */}

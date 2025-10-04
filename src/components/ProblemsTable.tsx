@@ -30,49 +30,49 @@ const statusColor = {
 const ProblemsTable = () => {
   return (
     <div className="overflow-x-auto bg-white rounded-lg shadow">
-      <table className="min-w-full divide-y divide-gray-200">
+      <table className="min-w-full divide-y divide-gray-200 text-sm sm:text-base">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-4 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
               Name
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-4 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
               Category
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-4 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
               Difficulty
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-4 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
               Status
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-4 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
               Action
             </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
           {problems.map((problem) => (
-            <tr key={problem.id}>
-              <td className="px-6 py-4 whitespace-nowrap text-gray-800">{problem.name}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-gray-800">{problem.category}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
+            <tr key={problem.id} className="hover:bg-gray-50 transition">
+              <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-gray-800">{problem.name}</td>
+              <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-gray-800">{problem.category}</td>
+              <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                 <span
-                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${difficultyColor[problem.difficulty]}`}
+                  className={`px-2 py-1 inline-flex text-xs sm:text-sm leading-5 font-semibold rounded-full ${difficultyColor[problem.difficulty]}`}
                 >
                   {problem.difficulty}
                 </span>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                 <span
-                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColor[problem.status]}`}
+                  className={`px-2 py-1 inline-flex text-xs sm:text-sm leading-5 font-semibold rounded-full ${statusColor[problem.status]}`}
                 >
                   {problem.status}
                 </span>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                 <Link
                   href={`/problems/${problem.id}`}
-                  className="text-indigo-600 hover:text-indigo-900"
+                  className="text-indigo-600 hover:text-indigo-900 text-sm sm:text-base"
                 >
                   Solve
                 </Link>

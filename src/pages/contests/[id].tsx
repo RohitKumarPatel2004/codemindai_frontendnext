@@ -5,6 +5,7 @@ import Footer from "../../components/Footer";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
+
 const contests = [
   {
     id: 1,
@@ -90,10 +91,11 @@ export default function ContestDetail() {
             </p>
           </motion.button>
         </div>
-
+        
         <motion.button
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.95 }}
+          onClick={() => router.push("/contests/live")}
           className="mt-10 bg-green-500 hover:bg-green-600 transition px-8 py-3 rounded-lg font-semibold shadow-md flex items-center mx-auto gap-2"
         >
           <span>🏆</span> Join Contest
