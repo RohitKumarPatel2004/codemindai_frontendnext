@@ -3,17 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Bell, Search, User, LogOut } from "lucide-react";
+import { Bell, Search, User, LogOut, Plus } from "lucide-react";
 
-interface NavItemProps {
-  href: string;
-  label: string;
-}
-
-const NavItem: React.FC<NavItemProps> = ({ href, label }) => {
+const NavItem = ({ href, label }: { href: string; label: string }) => {
   const pathname = usePathname();
   const isActive = pathname === href;
-
   return (
     <Link
       href={href}
@@ -33,7 +27,7 @@ const NavItem: React.FC<NavItemProps> = ({ href, label }) => {
   );
 };
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -47,7 +41,6 @@ const Navbar: React.FC = () => {
     }
   }, []);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -70,22 +63,20 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="relative w-10 h-10 sm:w-12 sm:h-12">
-                <Image
-                  src="/images/logo.png"
-                  alt="CodeBattelX Logo"
-                  fill
-                  className="object-contain cursor-pointer"
-                  priority
-                />
-              </div>
-              <span className="hidden sm:block text-lg font-bold text-green-700">
-                CodeBattelX
-              </span>
-            </Link>
-          </div>
+          <Link href="/" className="flex items-center space-x-2">
+            <div className="relative w-10 h-10 sm:w-12 sm:h-12">
+              <Image
+                src="/images/logo.png"
+                alt="CodeBattelX Logo"
+                fill
+                className="object-contain cursor-pointer"
+                priority
+              />
+            </div>
+            <span className="hidden sm:block text-lg font-bold text-green-700">
+              CodeBattelX
+            </span>
+          </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6 text-sm items-center">
@@ -100,34 +91,28 @@ const Navbar: React.FC = () => {
           <div className="hidden md:flex space-x-4 items-center relative">
             {isLoggedIn ? (
               <>
-                {/* Wallet Section */}
+                {/* Wallet */}
                 <div className="flex items-center gap-2 animate-fadeIn">
                   <div className="bg-green-100 text-green-700 font-semibold px-3 py-1 rounded-md text-sm shadow-sm">
                     ₹2,450
                   </div>
 
-                  <button className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-700 transition-all duration-300 hover:scale-105">
-                    <Link href="/add-cash" className="block">
-                      Add Cash
-                    </Link>
-                  </button>
+                  <Link
+                    href="/add-cash"
+                    className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-700 transition-all duration-300 hover:scale-105 inline-flex items-center gap-1"
+                  >
+                    <Plus size={14} /> Add Cash
+                  </Link>
                 </div>
 
-                {/* Icons */}
-                <Bell
-                  className="text-gray-600 hover:text-green-600 transition cursor-pointer"
-                  size={20}
-                />
-                <Search
-                  className="text-gray-600 hover:text-green-600 transition cursor-pointer"
-                  size={20}
-                />
+                <Bell className="text-gray-600 hover:text-green-600 cursor-pointer transition" size={20} />
+                <Search className="text-gray-600 hover:text-green-600 cursor-pointer transition" size={20} />
 
-                {/* Avatar with Dropdown */}
+                {/* Avatar Dropdown */}
                 <div className="relative" ref={menuRef}>
                   <button
                     onClick={() => setShowMenu(!showMenu)}
-                    className="flex items-center gap-1 cursor-pointer group"
+                    className="flex items-center gap-1 group"
                   >
                     <Image
                       src="/images/avatar1.png"
@@ -147,15 +132,10 @@ const Navbar: React.FC = () => {
                       strokeWidth="2"
                       viewBox="0 0 24 24"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19 9l-7 7-7-7"
-                      />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
                   </button>
 
-                  {/* Dropdown Menu */}
                   {showMenu && (
                     <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-100 rounded-lg shadow-lg py-2 animate-fadeIn">
                       <Link
@@ -192,46 +172,64 @@ const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-800 hover:text-green-600 transition-transform transform hover:scale-110"
-            >
-              {isOpen ? "✖" : "☰"}
-            </button>
-          </div>
+          {/* Mobile Toggle */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden text-gray-800 hover:text-green-600 transition-transform transform hover:scale-110"
+          >
+            {isOpen ? "✖" : "☰"}
+          </button>
         </div>
       </div>
 
       {/* Mobile Dropdown */}
       {isOpen && (
         <div className="md:hidden bg-white border-t border-gray-200 animate-slideDown">
-          <div className="flex flex-col space-y-2 px-4 py-3">
+          <div className="flex flex-col space-y-3 px-4 py-4">
             <NavItem href="/problems" label="Problems" />
             <NavItem href="/contests" label="Contests" />
             <NavItem href="/discuss" label="Discuss" />
             <NavItem href="/interview" label="Interview" />
             <NavItem href="/premium" label="Premium" />
-            {isLoggedIn ? (
-              <button
-                onClick={handleLogout}
-                className="text-red-500 text-left py-2 hover:text-red-700 transition"
-              >
-                Logout
-              </button>
-            ) : (
-              <>
+
+            {isLoggedIn && (
+              <div className="pt-3 border-t border-gray-100">
+                <div className="flex items-center justify-between">
+                  <span className="bg-green-100 text-green-700 font-semibold px-3 py-1 rounded-md text-sm shadow-sm">
+                    ₹2,450
+                  </span>
+                  <Link
+                    href="/add-cash"
+                    className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-700 transition-all duration-300 hover:scale-105 inline-flex items-center gap-1"
+                  >
+                    <Plus size={14} /> Add Cash
+                  </Link>
+                </div>
+
                 <Link
-                  href="/auth/signin"
-                  className="py-2 text-gray-700 hover:text-green-600 transition"
+                  href="/profile"
+                  className="flex items-center mt-3 text-gray-700 hover:text-green-600 transition"
                 >
+                  <User className="w-4 h-4 mr-2 text-gray-500" />
+                  Profile
+                </Link>
+
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center mt-2 text-gray-700 hover:text-red-600 transition"
+                >
+                  <LogOut className="w-4 h-4 mr-2 text-gray-500" />
+                  Logout
+                </button>
+              </div>
+            )}
+
+            {!isLoggedIn && (
+              <>
+                <Link href="/auth/signin" className="text-gray-700 hover:text-green-600 transition">
                   Sign In
                 </Link>
-                <Link
-                  href="/auth/signup"
-                  className="py-2 text-green-600 font-medium transition"
-                >
+                <Link href="/auth/signup" className="text-green-600 font-medium transition">
                   Sign Up
                 </Link>
               </>
