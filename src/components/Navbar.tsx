@@ -1,8 +1,9 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { Bell, Search, User, LogOut } from "lucide-react";
 
 interface NavItemProps {
   href: string;
@@ -20,18 +21,23 @@ const NavItem: React.FC<NavItemProps> = ({ href, label }) => {
         ${isActive ? "text-green-600" : "text-gray-700 hover:text-green-600"}`}
     >
       {label}
-      {/* Animated underline */}
       <span
         className={`absolute left-0 -bottom-1 h-0.5 w-full transform transition-transform duration-300 
-          ${isActive ? "scale-x-100 bg-green-600" : "scale-x-0 bg-green-600 group-hover:scale-x-100"}`}
+          ${
+            isActive
+              ? "scale-x-100 bg-green-600"
+              : "scale-x-0 bg-green-600 group-hover:scale-x-100"
+          }`}
       />
     </Link>
   );
 };
 
 const Navbar: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null); // null = still checking
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -39,6 +45,17 @@ const Navbar: React.FC = () => {
       const token = localStorage.getItem("token");
       setIsLoggedIn(!!token);
     }
+  }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setShowMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleLogout = () => {
@@ -52,7 +69,7 @@ const Navbar: React.FC = () => {
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          {/* Logo Section */}
+          {/* Logo */}
           <div className="flex items-center space-x-2">
             <Link href="/" className="flex items-center space-x-2">
               <div className="relative w-10 h-10 sm:w-12 sm:h-12">
@@ -77,15 +94,89 @@ const Navbar: React.FC = () => {
             <NavItem href="/discuss" label="Discuss" />
             <NavItem href="/interview" label="Interview" />
             <NavItem href="/premium" label="Premium" />
-            <NavItem href="/wallet" label="Wallet" />
           </div>
 
-          {/* Auth Buttons */}
-          <div className="hidden md:flex space-x-3 items-center">
-            {isLoggedIn === null ? (
-              // While checking localStorage, show placeholder
-              <div className="w-20 h-6 bg-gray-200 animate-pulse rounded" />
-            ) : !isLoggedIn ? (
+          {/* Right Section */}
+          <div className="hidden md:flex space-x-4 items-center relative">
+            {isLoggedIn ? (
+              <>
+                {/* Wallet Section */}
+                <div className="flex items-center gap-2 animate-fadeIn">
+                  <div className="bg-green-100 text-green-700 font-semibold px-3 py-1 rounded-md text-sm shadow-sm">
+                    ₹2,450
+                  </div>
+
+                  <button className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-700 transition-all duration-300 hover:scale-105">
+                    <Link href="/add-cash" className="block">
+                      Add Cash
+                    </Link>
+                  </button>
+                </div>
+
+                {/* Icons */}
+                <Bell
+                  className="text-gray-600 hover:text-green-600 transition cursor-pointer"
+                  size={20}
+                />
+                <Search
+                  className="text-gray-600 hover:text-green-600 transition cursor-pointer"
+                  size={20}
+                />
+
+                {/* Avatar with Dropdown */}
+                <div className="relative" ref={menuRef}>
+                  <button
+                    onClick={() => setShowMenu(!showMenu)}
+                    className="flex items-center gap-1 cursor-pointer group"
+                  >
+                    <Image
+                      src="/images/avatar1.png"
+                      alt="User Avatar"
+                      width={32}
+                      height={32}
+                      className="rounded-full border border-gray-300 shadow-sm transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <svg
+                      className={`w-4 h-4 text-gray-500 transition-transform duration-300 ${
+                        showMenu
+                          ? "rotate-180 text-green-600"
+                          : "group-hover:text-green-600"
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {showMenu && (
+                    <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-100 rounded-lg shadow-lg py-2 animate-fadeIn">
+                      <Link
+                        href="/profile"
+                        className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-green-600 transition"
+                      >
+                        <User className="w-4 h-4 mr-2 text-gray-500" />
+                        Profile
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="flex w-full items-center px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-red-600 transition"
+                      >
+                        <LogOut className="w-4 h-4 mr-2 text-gray-500" />
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
               <>
                 <Link href="/auth/signin">
                   <button className="px-3 py-1 border border-gray-500 rounded text-sm hover:bg-gray-100 transition-all duration-300 hover:scale-105">
@@ -98,13 +189,6 @@ const Navbar: React.FC = () => {
                   </button>
                 </Link>
               </>
-            ) : (
-              <button
-                onClick={handleLogout}
-                className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700 hover:scale-105 transition-all duration-300"
-              >
-                Logout
-              </button>
             )}
           </div>
 
@@ -120,41 +204,37 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Dropdown */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200">
+        <div className="md:hidden bg-white border-t border-gray-200 animate-slideDown">
           <div className="flex flex-col space-y-2 px-4 py-3">
             <NavItem href="/problems" label="Problems" />
             <NavItem href="/contests" label="Contests" />
             <NavItem href="/discuss" label="Discuss" />
             <NavItem href="/interview" label="Interview" />
             <NavItem href="/premium" label="Premium" />
-            <NavItem href="/wallet" label="Wallet" />
-
-            {isLoggedIn === null ? (
-              <div className="w-20 h-6 bg-gray-200 animate-pulse rounded" />
-            ) : !isLoggedIn ? (
-              <>
-                <Link
-                  href="/auth/signin"
-                  className="block py-2 text-gray-700 hover:text-green-600 transition"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/auth/signup"
-                  className="block py-2 text-green-600 font-medium transition"
-                >
-                  Sign Up
-                </Link>
-              </>
-            ) : (
+            {isLoggedIn ? (
               <button
                 onClick={handleLogout}
                 className="text-red-500 text-left py-2 hover:text-red-700 transition"
               >
                 Logout
               </button>
+            ) : (
+              <>
+                <Link
+                  href="/auth/signin"
+                  className="py-2 text-gray-700 hover:text-green-600 transition"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/auth/signup"
+                  className="py-2 text-green-600 font-medium transition"
+                >
+                  Sign Up
+                </Link>
+              </>
             )}
           </div>
         </div>

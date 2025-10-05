@@ -1,35 +1,48 @@
-import type { NextPage } from "next";
 import Head from "next/head";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import ProfileCard from "../components/ProfileCard";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import ProfileHeader from "@/components/profile/ProfileHeader";
+import StatsGrid from "@/components/profile/StatsGrid";
+import SubmissionChart from "@/components/profile/SubmissionChart";
+import ProblemCategories from "@/components/profile/ProblemCategories";
+import Achievements from "@/components/profile/Achievements";
+import ActivityList from "@/components/profile/ActivityList";
+import Sidebar from "@/components/profile/Sidebar";
+import {
+  userProfile,
+  problemCategories,
+  friends,
+  leaderboard,
+  activities,
+} from "@/data/profileData";
 
-const Profile: NextPage = () => {
-  const user = {
-    name: "Rohit Sharma",
-    email: "rohit@example.com",
-    avatar: "/images/avatar1.png",
-    totalSolved: 120,
-    rank: 15,
-  };
-
+export default function ProfilePage() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <Head>
         <title>Profile - CodemindAI</title>
-        <meta name="description" content="Your profile on CodemindAI" />
       </Head>
 
       <Navbar />
 
-      <main className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">My Profile</h1>
-        <ProfileCard user={user} />
+      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-6">
+          <ProfileHeader user={userProfile} />
+          <StatsGrid stats={userProfile.stats} />
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <SubmissionChart />
+            <ProblemCategories categories={problemCategories} />
+          </div>
+
+          <Achievements />
+          <ActivityList activities={activities} />
+        </div>
+
+        <Sidebar friends={friends} leaderboard={leaderboard} />
       </main>
 
       <Footer />
     </div>
   );
-};
-
-export default Profile;
+}
