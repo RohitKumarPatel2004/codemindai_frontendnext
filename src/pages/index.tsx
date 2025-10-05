@@ -6,6 +6,8 @@ import HeroSection from "../components/HeroSection";
 import FeaturesSection from "../components/FeaturesSection";
 import CategoriesSection from "../components/CategoriesSection";
 import LeaderboardSection from "../components/LeaderboardSection";
+import LiveContests from "../components/LiveContests";
+import UpcomingContests from "../components/UpcomingContests"
 
 const Home: NextPage = () => {
   return (
@@ -27,6 +29,13 @@ const Home: NextPage = () => {
 
         {/* Categories */}
         <CategoriesSection />
+
+           {/* 🏁 Upcoming Contests Section */}
+        <UpcomingContests />
+
+        {/* 🔴 Live Contests Section */}
+        <LiveContests />
+
 
         {/* Leaderboard */}
         <LeaderboardSection />
